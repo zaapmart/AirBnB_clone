@@ -20,17 +20,17 @@ class FileStorage:
         """
         return FileStorage.__objects
 
-    def save(self):
+    def save(self): 
         """
         """
         all_objs = FileStorage.__objects
         obj_dict = {}
         for obj in all_objs.keys():
             obj_dict[obj] = all_objs[obj].to_dict()
-
-        with open(FileStorage.__file_path, 'w', encoding="utf-8") as file:
-            json.dump(obj_dict, file)
-
+    
+        with open(FileStorage.__file_path, 'w') as file:
+            json.dump(obj_dict, file, ensure_ascii=False)
+    
     def reload(self):
         """
         """
