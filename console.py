@@ -7,6 +7,11 @@ import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -14,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     HBNBCommand console class
     """
     prompt = "(hbnb) "
-    valid_classes = ["BaseModel, User"]
+    valid_classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
     def do_EOF(self, arg):
         """
@@ -30,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """
-        Create a new instance of BaseModel and save it to the JSON file.
+        Create a new instance of a specified class and save it to the JSON file.
         Usage: create <class_name>
         """
         commands = shlex.split(arg)
@@ -40,11 +45,9 @@ class HBNBCommand(cmd.Cmd):
         elif commands[0] not in self.valid_classes:
             print("** class doesn't exist **")
         else:
-            # Assuming BaseModel is the only valid class for now
-            if commands[0] == "BaseModel":
-                new_instance = eval(f"{commands[0]}()")
-                storage.save()
-                print(new_instance.id)
+            new_instance = eval(commands[0])()
+            storage.save()
+            print(new_instance.id)
 
     def do_show(self, arg):
         """
@@ -61,7 +64,6 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             objects = storage.all()
-
             key = "{}.{}".format(commands[0], commands[1])
             if key in objects:
                 print(objects[key])
@@ -93,11 +95,9 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, arg):
         """
         Print the string representation of all instances or a specific class.
-        Usage: <User>.all()
-                <User>.show()
+        Usage: all [<class_name>]
         """
         objects = storage.all()
-
         commands = shlex.split(arg)
 
         if len(commands) == 0:
@@ -125,7 +125,6 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             objects = storage.all()
-
             key = "{}.{}".format(commands[0], commands[1])
             if key not in objects:
                 print("** no instance found **")
