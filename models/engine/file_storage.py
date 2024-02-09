@@ -8,6 +8,12 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
+# Importing FileNotFoundError here
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+
 
 class FileStorage:
     __file_path = "file.json"
