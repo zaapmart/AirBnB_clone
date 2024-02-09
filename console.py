@@ -6,6 +6,7 @@ import cmd
 import shlex
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,7 +14,7 @@ class HBNBCommand(cmd.Cmd):
     HBNBCommand console class
     """
     prompt = "(hbnb) "
-    valid_classes = ["BaseModel"]
+    valid_classes = ["BaseModel, User"]
 
     def do_EOF(self, arg):
         """
@@ -41,7 +42,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             # Assuming BaseModel is the only valid class for now
             if commands[0] == "BaseModel":
-                new_instance = BaseModel()
+                new_instance = eval(f"{commands[0]}()")
                 storage.save()
                 print(new_instance.id)
 

@@ -9,6 +9,10 @@ import models
 class BaseModel:
     def __init__(self, *args, **kwargs):
         formatted_time = "%Y-%m-%dT%H:%M:%S.%f"
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.utcnow()
+        self.updated_at = datetime.utcnow()
+
         if kwargs:
             for key, value in kwargs.items():
                 if key == "__class__":
@@ -17,18 +21,15 @@ class BaseModel:
                     setattr(self, key, datetime.strptime(value, formatted_time))
                 else:
                     setattr(self, key, value)
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.utcnow()
-            self.updated_at = datetime.utcnow()
-	models.storage.new(self)
+        
+        models.storage.new(self)
 
     def save(self):
         """
         updates updated_at attribute with current date time
         """
         self.updated_at = datetime.utcnow()
-	models.storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """
@@ -45,6 +46,7 @@ class BaseModel:
         class_name = self.__class__.__name__
         return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
 
+
 if __name__ == '__main__':
     my_model = BaseModel()
     my_model.name = "My First Model"
@@ -57,7 +59,7 @@ if __name__ == '__main__':
     print("JSON of my_model:")
     for key in my_model_json.keys():
         print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))
-		
+
     print("--")
     my_new_model = BaseModel(**my_model_json)
     print(my_new_model.id)
@@ -66,4 +68,3 @@ if __name__ == '__main__':
 
     print("--")
     print(my_model is my_new_model)
-
