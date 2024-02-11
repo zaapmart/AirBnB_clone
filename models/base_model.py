@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """
+BaseModel Class from whcih other classes will inherit from 
 """
 
 import uuid
 from datetime import datetime
-import models
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -13,26 +13,15 @@ class BaseModel:
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
 
-        if kwargs:
-            for key, value in kwargs.items():
-                if key == "__class__":
-                    continue
-                elif key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(value, formatted_time))
-                else:
-                    setattr(self, key, value)
-        
-        models.storage.new(self)
-
     def save(self):
         """
         updates updated_at attribute with current date time
         """
-        self.updated_at = datetime.utcnow()
-        models.storage.save()
+        self.updated_at = datetime.utcnow()        
 
     def to_dict(self):
         """
+	represents an dictionary instance of a  object
         """
         instn_dict = self.__dict__.copy()
         instn_dict["__class__"] = self.__class__.__name__
@@ -58,13 +47,4 @@ if __name__ == '__main__':
     print(my_model_json)
     print("JSON of my_model:")
     for key in my_model_json.keys():
-        print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))
-
-    print("--")
-    my_new_model = BaseModel(**my_model_json)
-    print(my_new_model.id)
-    print(my_new_model)
-    print(type(my_new_model.created_at))
-
-    print("--")
-    print(my_model is my_new_model)
+        print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))  
