@@ -19,7 +19,8 @@ class HBNBCommand(cmd.Cmd):
     HBNBCommand console class
     """
     prompt = "(hbnb) "
-    valid_classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
+    valid_classes = ["BaseModel", "User", "Place", "State",
+                     "City", "Amenity", "Review"]
 
     def do_EOF(self, arg):
         """
@@ -35,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """
-        Create a new instance of a specified class and save it to the JSON file.
+        Create new instance of a specified class and save it to the JSON file.
         Usage: create <class_name>
         """
         commands = shlex.split(arg)

@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """
-BaseModel Class from whcih other classes will inherit from 
+BaseModel Class from which other classes will inherit from
 """
 
 import uuid
 from datetime import datetime
+
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -17,11 +18,11 @@ class BaseModel:
         """
         updates updated_at attribute with current date time
         """
-        self.updated_at = datetime.utcnow()        
+        self.updated_at = datetime.utcnow()
 
     def to_dict(self):
         """
-	represents an dictionary instance of a  object
+        represents a dictionary instance of an object
         """
         instn_dict = self.__dict__.copy()
         instn_dict["__class__"] = self.__class__.__name__
@@ -47,4 +48,5 @@ if __name__ == '__main__':
     print(my_model_json)
     print("JSON of my_model:")
     for key in my_model_json.keys():
-        print("\t{}: ({}) - {}".format(key, type(my_model_json[key]), my_model_json[key]))  
+        print("\t{}: ({}) - {}".format(key, type(my_model_json[key]),
+                                       my_model_json[key]))
